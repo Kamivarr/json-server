@@ -1,4 +1,4 @@
-(function () {
+(function() {
   const cw4 = document.createElement("button");
   cw4.id = "cw4";
   cw4.textContent = "Pobierz posty z GitHuba";
@@ -6,33 +6,29 @@
 
   const answer = document.getElementById("answer");
 
-  cw4.addEventListener("click", async function () {
-    answer.textContent = "Loading…";
-
+  cw4.addEventListener("click", async function() {
     try {
-      const response = await fetch(
-        "https://my-json-server.typicode.com/Kamivarr/json-server/posts",
-      );
+      answer.textContent = "Loading…";
+
+      const response = await fetch('https://my-json-server.typicode.com/Kamivarr/json-server/posts');
       const posts = await response.json();
 
-      console.log(posts); // pokazuje wszystkie posty
-      console.log(posts[0].title); // pierwszy tytuł
+      // Logowanie danych (opcjonalne)
+      console.log(posts);
 
-      const html = posts
-        .map(
-          (post) => `
-        <div class="post">
+      // Tworzymy HTML - lista postów
+      const html = posts.map(post => `
+        <li class="post-item">
           <h3>${post.title}</h3>
           <p>${post.body}</p>
-        </div>
-      `,
-        )
-        .join("");
+        </li>
+      `).join('');
 
-      answer.innerHTML = html;
+      // Wstawiamy do answer - lista opakowana w <ul>
+      answer.innerHTML = `<ul class="post-list">${html}</ul>`;
     } catch (error) {
-      console.error("Błąd:", error);
-      answer.textContent = "Wystąpił błąd podczas pobierania danych.";
+      answer.textContent = "Błąd przy pobieraniu danych z GitHub JSON.";
+      console.error(error);
     }
   });
 })();
